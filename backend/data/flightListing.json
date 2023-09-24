@@ -1,0 +1,17 @@
+ [
+    {
+      "flightNumber": "EW5623",
+      "origin": "BERLIN",
+      "destination": "DÜSSELDORF"
+  },
+  {
+    "flightNumber": "EW9866",
+    "origin": "BERLIN",
+    "destination": "FRANKFURT"
+},
+{
+  "flightNumber": "EW4785",
+  "origin": "BERLIN",
+  "destination": "FRANKFURT"
+}
+  ]

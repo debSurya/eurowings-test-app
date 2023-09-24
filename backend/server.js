@@ -1,15 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fs from "fs";
+import cors from 'cors';
 import { appRouter } from "./routes/routes.js";
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const routes = appRouter(app, fs);
+appRouter(app);
 
-const server = app.listen(1011, () => {
+app.listen(1011, () => {
     console.log("Running");
-})
+});

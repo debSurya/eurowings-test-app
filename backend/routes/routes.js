@@ -1,12 +1,16 @@
 import fs from "fs";
 
-export const appRouter = (app, fs) => {
-    const dataPath = "./data/flightData.json";
+export const appRouter = (app) => {
+    const flightListingData = "./data/flightListing.json";
+    const airportDataPath = "./data/airportListing.json";
 
-    app.post('/add-flight', (req, res) => {
-        fs.readFile(dataPath, 'utf8', (err, data) => {
-            if (err) throw err;
-            res.send(JSON.parse(data));
-        })
+    app.get('/get-airports', (_, res) => {
+        const data = fs.readFileSync(airportDataPath, 'utf-8');
+        res.send(JSON.parse(data));
+    });
+
+    app.get('/get-flights', (_, res) => {
+        const data = fs.readFileSync(flightListingData, 'utf8');
+        res.send(JSON.parse(data));
     })
 }

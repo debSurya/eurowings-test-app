@@ -6,7 +6,8 @@ import AddNewFlight from "./components/AddNewFlight/AddNewFlight.vue";
 const routes = [
     {
         path: "/",
-        component: FlightListings
+        component: FlightListings,
+        
     },
     {
         path: "/add-new-flight",
