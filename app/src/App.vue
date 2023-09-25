@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, ref } from 'vue';
-import { useFetchAirports } from './services';
- 
-const  airportData = ref<any>({});
+import { computed, onMounted, provide, ref } from "vue";
+import { useFetchAirports } from "./services";
+
+const airportData = ref<any>(null);
 
 onMounted(() => {
-  airportData.value = useFetchAirports();
+  airportData.value = useFetchAirports().data;
 });
 
-provide("airports", computed(() => airportData.value.data));
-
+provide(
+  "airports",
+  computed(() => airportData.value),
+);
 </script>
 
 <template>
-  <main class="app-main">
+  <v-layout class="rounded rounded-md">
     <router-view />
-  </main>
+  </v-layout>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

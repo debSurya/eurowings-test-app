@@ -1,17 +1,17 @@
- [
-    {
-      "flightNumber": "EW5623",
-      "origin": "BERLIN",
-      "destination": "DÜSSELDORF"
+[
+  {
+    "flightNumber": "EW5623",
+    "origin": "TXL",
+    "destination": "DUS"
   },
   {
     "flightNumber": "EW9866",
-    "origin": "BERLIN",
-    "destination": "FRANKFURT"
-},
-{
-  "flightNumber": "EW4785",
-  "origin": "BERLIN",
-  "destination": "FRANKFURT"
-}
-  ]
+    "origin": "TXL",
+    "destination": "CGN"
+  },
+  {
+    "flightNumber": "EW4785",
+    "origin": "HAM",
+    "destination": "STR"
+  }
+]
