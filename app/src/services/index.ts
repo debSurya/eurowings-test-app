@@ -3,10 +3,12 @@ import { ref } from "vue";
 
 export const useFetchAirports = () => {
   const airports = ref(null),
+    loading = ref(true),
     error = ref<Error | null>(null);
 
   fetch("http://localhost:1011/get-airports")
     .then((res) => {
+      loading.value = false;
       if (res.ok) {
         return res.json();
       } else {
@@ -15,10 +17,11 @@ export const useFetchAirports = () => {
     })
     .then((data) => (airports.value = data))
     .catch((err: Error) => {
+      loading.value = false;
       error.value = err;
     });
 
-  return { data: airports, error };
+  return { data: airports, error, loading };
 };
 
 export const useFetchFlightListing = async () => {

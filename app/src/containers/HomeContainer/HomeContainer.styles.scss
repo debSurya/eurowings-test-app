@@ -1,0 +1,46 @@
+.layout {
+  padding: 1.5rem;
+  background-color: #e1dbe1;
+
+  .v-app-bar {
+    background-image: linear-gradient(
+      to right,
+      #ffffff,
+      #f8fbff,
+      #ebf8ff,
+      #dbf6ff,
+      #c9f5ff
+    ) !important;
+
+    .v-toolbar__image {
+      width: 60px;
+      height: 52px;
+      right: 20px;
+      left: auto;
+      top: 8px;
+    }
+
+    .v-toolbar-title__placeholder {
+      font-size: 2rem;
+      color: #6e1d49;
+      font-weight: 600;
+      line-height: 2.5rem;
+    }
+  }
+  .main-content {
+    height: calc(100vh - 4rem);
+  }
+
+  .v-expansion-panel-text__wrapper {
+    padding: 0px;
+  }
+
+  .v-expansion-panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+
+    span.v-expansion-panel-title__overlay {
+      background-color: #9a245d;
+    }
+  }
+}

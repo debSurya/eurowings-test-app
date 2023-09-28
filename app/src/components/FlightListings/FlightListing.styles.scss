@@ -1,0 +1,20 @@
+.table-container {
+  box-shadow: 0px 0px 5px -1px #2f4f4f;
+
+  table {
+    th {
+      font-size: 1.1rem;
+      background-color: #9a245d !important;
+      color: #f5fffa !important;
+    }
+    td {
+      background-color: #f8f8ff;
+      border-top: 1px solid #f8f8ff;
+      border-bottom: 1px solid #f8f8ff;
+
+      .v-card__underlay {
+        background: #380606;
+      }
+    }
+  }
+}

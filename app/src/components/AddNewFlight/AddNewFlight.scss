@@ -1,0 +1,30 @@
+.add-flight-container {
+  background: #ffffff;
+
+  .input-flight-num {
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+  }
+
+  label.v-field-label {
+    color: #000000;
+    font-weight: 600;
+    font-size: 0.9rem !important;
+  }
+
+  .add-new-submit-btn {
+    background-color: #9a245d !important;
+    color: #f5fffa;
+
+    span {
+      font-weight: 600;
+    }
+
+    &.v-btn--disabled {
+      opacity: 0.5 !important;
+      color: #f5fffa;
+    }
+  }
+}

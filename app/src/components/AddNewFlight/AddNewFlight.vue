@@ -1,41 +1,47 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
-import { postNewFlight } from "../../services";
+import { ref, onMounted } from "vue";
+import { useDisplay } from "vuetify/lib/framework.mjs";
+import { isMobile } from "../../utils/common";
 
-const { allAirports } = defineProps<{
+const { allAirports, formSubmissionStatus } = defineProps<{
   allAirports: any[];
+  formSubmissionStatus: boolean;
 }>();
 
 const emitters = defineEmits<{
-  (e: "emitStatus", status: boolean): void;
+  (
+    e: "emitFormData",
+    formData: {
+      flightNumber: string;
+      destination: string;
+      origin: string;
+    },
+  ): void;
 }>();
 
+const display = useDisplay();
+
+console.log(display);
+
 const airportOptions = ref([]),
-  isAddNewFlightSuccessful = ref(false);
+  formRef = ref(null);
 
 const form = {
-  valid: ref(false),
+  valid: ref(null),
   flightNumber: ref(""),
   origin: ref(""),
   destination: ref(""),
-  setRules: [(value: string) => !!value || "Required"],
+  setRules: (value: string) => !!value || "Required",
+  flightNumberRules: (value: string) => value.length <= 4 || "Should be upto 4 digits",
 };
 
-const onSubmitData = async () => {
-  const [response] = await postNewFlight({
+const onSubmitData = () => {
+  emitters("emitFormData", {
     flightNumber: form.flightNumber.value,
-    destination: form.destination.value,
     origin: form.origin.value,
+    destination: form.destination.value,
   });
-  console.log(response);
-  isAddNewFlightSuccessful.value = response === "OK";
 };
-
-watch(isAddNewFlightSuccessful, (currentVal: boolean, prevVal: boolean) => {
-  if (currentVal && !prevVal) {
-    emitters("emitStatus", currentVal);
-  }
-});
 
 onMounted(() => {
   airportOptions.value = allAirports
@@ -55,26 +61,28 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-main>
-    <v-form @submit.prevent="onSubmitData" v-model="form.valid.value">
+  <div class="add-flight-container rounded d-flex flex-column pt-3 pb-3" :class="!isMobile() && 'box-shadow'">
+    <v-form @submit.prevent="onSubmitData" v-model="form.valid.value" ref="formRef">
       <v-container>
-        <v-row no-gutters>
-          <v-col cols="4">
+        <v-row>
+          <v-col cols="12" sm="12" md="4" lg="4">
             <v-text-field
+              class="input-flight-num pb-1"
+              type="number"
               v-model="form.flightNumber.value"
-              :rules="form.setRules"
+              :rules="[form.setRules, form.flightNumberRules]"
               label="Flight Number"
             />
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" sm="12" md="4" lg="4">
             <v-autocomplete
-              theme="dark"
+              class="pb-1"
               variant="outlined"
               v-model="form.origin.value"
               :items="airportOptions"
               item-title="name"
               item-value="code"
-              :rules="form.setRules"
+              :rules="[form.setRules]"
               label="Origin"
               required
             >
@@ -83,15 +91,14 @@ onMounted(() => {
               </template>
             </v-autocomplete>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="12" sm="12" md="4" lg="4">
             <v-autocomplete
-              theme="dark"
               variant="outlined"
               v-model="form.destination.value"
               :items="airportOptions"
               item-title="name"
               item-value="code"
-              :rules="form.setRules"
+              :rules="[form.setRules]"
               label="Destination"
               required
             >
@@ -101,17 +108,24 @@ onMounted(() => {
             </v-autocomplete>
           </v-col>
         </v-row>
-        <v-row justify="center">
-          <v-col cols="3">
-            <v-btn type="submit" block variant="elevated" :disabled="!form.valid.value"
-              >Submit</v-btn
+        <v-row class="mt-0" justify="center">
+          <v-col cols="6" sm="4" md="3" lg="2">
+            <v-btn
+              class="add-new-submit-btn"
+              type="submit"
+              block
+              :ripple="true"
+              variant="elevated"
+              :disabled="!form.valid.value || formSubmissionStatus"
             >
+              <v-progress-circular indeterminate :size="20" v-if="formSubmissionStatus" />
+              <span v-else>{{ isMobile() ? "Submit" : "Add New Flight" }}</span>
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
     </v-form>
-    <span v-if="isAddNewFlightSuccessful">Success</span>
-  </v-main>
+  </div>
 </template>
 
-<style></style>
+<style src="./AddNewFlight.scss" lang="scss"></style>
