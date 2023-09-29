@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useDisplay } from "vuetify/lib/framework.mjs";
-import { isMobile } from "../../utils/common";
+import { checkMobileDevices } from "../../utils/common";
 
 const { allAirports, formSubmissionStatus } = defineProps<{
   allAirports: any[];
@@ -19,12 +18,9 @@ const emitters = defineEmits<{
   ): void;
 }>();
 
-const display = useDisplay();
-
-console.log(display);
-
 const airportOptions = ref([]),
-  formRef = ref(null);
+  formRef = ref(null),
+  isMobile = ref(checkMobileDevices());
 
 const form = {
   valid: ref(null),
@@ -61,7 +57,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="add-flight-container rounded d-flex flex-column pt-3 pb-3" :class="!isMobile() && 'box-shadow'">
+  <div
+    class="add-flight-container rounded d-flex flex-column pt-3 pb-3"
+    :class="!isMobile && 'box-shadow'"
+  >
     <v-form @submit.prevent="onSubmitData" v-model="form.valid.value" ref="formRef">
       <v-container>
         <v-row>
@@ -119,7 +118,7 @@ onMounted(() => {
               :disabled="!form.valid.value || formSubmissionStatus"
             >
               <v-progress-circular indeterminate :size="20" v-if="formSubmissionStatus" />
-              <span v-else>{{ isMobile() ? "Submit" : "Add New Flight" }}</span>
+              <span v-else>{{ isMobile ? "Submit" : "Add New Flight" }}</span>
             </v-btn>
           </v-col>
         </v-row>

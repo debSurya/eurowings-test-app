@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import { reactive, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { postNewFlight, useFetchAirports, useFetchFlightListing } from "../../services";
 import AddNewFlight from "../../components/AddNewFlight/AddNewFlight.vue";
 import FlightListing from "../../components/FlightListings/FlightListing.vue";
 import { IFlightListingResponse } from "../../components/FlightListings/FlightListing.interface";
-import { isMobile } from "../../utils/common";
+import { checkMobileDevices } from "../../utils/common";
 
-const showDialog = reactive({
-    show: false,
-    success: false,
-    message: "",
-  }),
+const showDialog = ref(false),
+  flightAdditionStatusSuccess = ref(false),
+  flightAdditionStatusMessage = ref(""),
+  isMobile = ref(checkMobileDevices()),
   initialLoad = ref(true),
   loadingFlightListing = ref(true),
   formSubmitting = ref(false),
@@ -28,19 +27,19 @@ const onFormSubmit = async (formData: {
     origin: formData.origin,
   });
   formSubmitting.value = false;
-  showDialog.show = true;
+  showDialog.value = true;
   if (response === "OK") {
-    showDialog.success = true;
-    showDialog.message = "Flight added successfully!";
+    flightAdditionStatusSuccess.value = true;
+    flightAdditionStatusMessage.value = "Flight added successfully!";
   } else {
-    showDialog.success = false;
-    showDialog.message = "Flight addition failed!";
+    flightAdditionStatusSuccess.value = false;
+    flightAdditionStatusMessage.value = "Flight addition failed!";
   }
 };
 
 const dismissModal = () => {
-  showDialog.show = false;
-  if (showDialog.success) {
+  showDialog.value = false;
+  if (flightAdditionStatusSuccess.value) {
     fetchFlightListing();
   }
 };
@@ -69,7 +68,7 @@ onMounted(() => {
       :class="(loadingAirports || loadingFlightListing) && 'justify-center'"
     >
       <template v-if="!loadingAirports && !loadingFlightListing">
-        <template v-if="isMobile()">
+        <template v-if="isMobile">
           <v-expansion-panels>
             <v-expansion-panel title="Add New Flight">
               <v-expansion-panel-text>
@@ -95,9 +94,9 @@ onMounted(() => {
         <span v-if="initialLoad">Fetching flights and airports....</span>
         <span v-else>Refetching flights....</span>
       </v-progress-linear>
-      <v-dialog v-model="showDialog.show" persistent width="300">
+      <v-dialog v-model="showDialog" persistent width="300">
         <v-card class="align-center">
-          <v-card-text class="text-h6">{{ showDialog.message }}</v-card-text>
+          <v-card-text class="text-h6">{{ flightAdditionStatusMessage }}</v-card-text>
           <v-card-actions>
             <v-btn variant="tonal" block @click="dismissModal()">Close</v-btn>
           </v-card-actions>

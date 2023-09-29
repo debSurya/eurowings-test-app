@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { IFlightListingViewData, IFlightListingResponse } from "./FlightListing.interface";
-import { isMobile } from "../../utils/common";
+import { checkMobileDevices } from "../../utils/common";
 
 const { allAirports, flightListing } = defineProps<{
   allAirports: any[];
@@ -12,7 +12,8 @@ const flightListingData = ref<IFlightListingViewData[]>([]);
 
 const tableRef = ref(null),
   tableHeight = ref(0),
-  scrollPos = ref(0);
+  scrollPos = ref(0),
+  isMobile = ref(checkMobileDevices());
 
 const populateFlightListing = () => {
   flightListingData.value = flightListing.map((val: IFlightListingResponse) => {
@@ -38,7 +39,9 @@ const populateFlightListing = () => {
 
 onMounted(() => {
   populateFlightListing();
-  tableHeight.value = window.innerHeight - tableRef.value.$el.getBoundingClientRect().top - 20;
+  tableHeight.value = isMobile.value
+    ? window.innerHeight - tableRef.value.$el.getBoundingClientRect().top - 20
+    : window.innerHeight;
   tableRef.value.$el.children[0].addEventListener("scroll", () => {
     scrollPos.value = tableRef.value.$el.children[0].scrollTop;
   });
@@ -64,21 +67,19 @@ onMounted(() => {
       <tbody>
         <tr v-for="(flight, index) in flightListingData" :key="index">
           <td class="text-center pa-2">
-            <span :class="isMobile() ? 'text-subtitle-1' : 'text-h6'">{{
-              flight.flightNumber
-            }}</span>
+            <span :class="isMobile ? 'text-subtitle-1' : 'text-h6'">{{ flight.flightNumber }}</span>
           </td>
           <td class="text-center pa-2">
             <v-card
               class="d-flex flex-column justify-center"
               variant="tonal"
-              :min-height="isMobile() ? '140px' : '120px'"
+              :min-height="isMobile ? '140px' : '120px'"
             >
               <v-card-title>{{ flight.origin.code }}</v-card-title>
               <v-card-subtitle>{{ flight.origin.country }}</v-card-subtitle>
               <v-card-text
                 class="d-flex align-center justify-center pa-1"
-                :class="!isMobile() ? 'font-size-1' : ''"
+                :class="!isMobile ? 'font-size-1' : ''"
                 >{{ flight.origin.name }}</v-card-text
               >
             </v-card>
@@ -87,13 +88,13 @@ onMounted(() => {
             <v-card
               class="d-flex flex-column justify-center"
               variant="tonal"
-              :min-height="isMobile() ? '140px' : '120px'"
+              :min-height="isMobile ? '140px' : '120px'"
             >
               <v-card-title>{{ flight.destination.code }}</v-card-title>
               <v-card-subtitle>{{ flight.destination.country }}</v-card-subtitle>
               <v-card-text
                 class="d-flex align-center justify-center pa-1"
-                :class="!isMobile() ? 'font-size-1' : ''"
+                :class="!isMobile ? 'font-size-1' : ''"
                 >{{ flight.destination.name }}</v-card-text
               >
             </v-card>
