@@ -2,7 +2,7 @@
 import { ref, onMounted } from "vue";
 import { checkMobileDevices } from "../../utils/common";
 
-const { allAirports, formSubmissionStatus } = defineProps<{
+const props = defineProps<{
   allAirports: any[];
   formSubmissionStatus: boolean;
 }>();
@@ -40,7 +40,7 @@ const onSubmitData = () => {
 };
 
 onMounted(() => {
-  airportOptions.value = allAirports
+  airportOptions.value = props.allAirports
     .map((airport: any) => ({
       code: airport.code,
       name: airport.name,
@@ -115,9 +115,9 @@ onMounted(() => {
               block
               :ripple="true"
               variant="elevated"
-              :disabled="!form.valid.value || formSubmissionStatus"
+              :disabled="!form.valid.value || props.formSubmissionStatus"
             >
-              <v-progress-circular indeterminate :size="20" v-if="formSubmissionStatus" />
+              <v-progress-circular indeterminate :size="20" v-if="props.formSubmissionStatus" />
               <span v-else>{{ isMobile ? "Submit" : "Add New Flight" }}</span>
             </v-btn>
           </v-col>

@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 import { postNewFlight, useFetchAirports, useFetchFlightListing } from "../../services";
 import AddNewFlight from "../../components/AddNewFlight/AddNewFlight.vue";
 import FlightListing from "../../components/FlightListings/FlightListing.vue";
+import InformationDialog from "../../components/InformationDialog/InformationDialog.vue";
+import ExpansionPanel from "../../components/ExpansionPanel/ExpansionPanel.vue";
 import { IFlightListingResponse } from "../../components/FlightListings/FlightListing.interface";
 import { checkMobileDevices } from "../../utils/common";
 
@@ -68,19 +70,13 @@ onMounted(() => {
       :class="(loadingAirports || loadingFlightListing) && 'justify-center'"
     >
       <template v-if="!loadingAirports && !loadingFlightListing">
-        <template v-if="isMobile">
-          <v-expansion-panels>
-            <v-expansion-panel title="Add New Flight">
-              <v-expansion-panel-text>
-                <add-new-flight
-                  :all-airports="airportData"
-                  :form-submission-status="formSubmitting"
-                  @emit-form-data="onFormSubmit"
-                />
-              </v-expansion-panel-text>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </template>
+        <expansion-panel v-if="isMobile">
+          <add-new-flight
+            :all-airports="airportData"
+            :form-submission-status="formSubmitting"
+            @emit-form-data="onFormSubmit"
+          />
+        </expansion-panel>
         <add-new-flight
           v-else
           :all-airports="airportData"
@@ -94,14 +90,11 @@ onMounted(() => {
         <span v-if="initialLoad">Fetching flights and airports....</span>
         <span v-else>Refetching flights....</span>
       </v-progress-linear>
-      <v-dialog v-model="showDialog" persistent width="300">
-        <v-card class="align-center">
-          <v-card-text class="text-h6">{{ flightAdditionStatusMessage }}</v-card-text>
-          <v-card-actions>
-            <v-btn variant="tonal" block @click="dismissModal()">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <information-dialog
+        :showDialog="showDialog"
+        :flightAdditionStatusMessage="flightAdditionStatusMessage"
+        @emit-modal-dismiss-event="dismissModal"
+      />
     </v-main>
   </v-layout>
 </template>

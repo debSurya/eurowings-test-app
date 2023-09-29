@@ -42,7 +42,7 @@ onMounted(() => {
   tableHeight.value = isMobile.value
     ? window.innerHeight - tableRef.value.$el.getBoundingClientRect().top - 20
     : window.innerHeight;
-  tableRef.value.$el.children[0].addEventListener("scroll", () => {
+  tableRef.value?.$el?.children[0]?.addEventListener("scroll", () => {
     scrollPos.value = tableRef.value.$el.children[0].scrollTop;
   });
 });
