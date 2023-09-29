@@ -41,7 +41,7 @@ onMounted(() => {
   populateFlightListing();
   tableHeight.value = isMobile.value
     ? window.innerHeight - tableRef.value.$el.getBoundingClientRect().top - 20
-    : window.innerHeight;
+    : window.innerHeight - 80;
   tableRef.value?.$el?.children[0]?.addEventListener("scroll", () => {
     scrollPos.value = tableRef.value.$el.children[0].scrollTop;
   });

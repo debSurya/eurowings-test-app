@@ -92,6 +92,7 @@ onMounted(() => {
       </v-progress-linear>
       <information-dialog
         :showDialog="showDialog"
+        :success="flightAdditionStatusSuccess"
         :flightAdditionStatusMessage="flightAdditionStatusMessage"
         @emit-modal-dismiss-event="dismissModal"
       />

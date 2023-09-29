@@ -4,6 +4,7 @@ import { checkMobileDevices } from "../../utils/common";
 
 const props = defineProps<{
   showDialog: boolean;
+  success: boolean;
   flightAdditionStatusMessage: string;
 }>();
 
@@ -19,9 +20,13 @@ const dismissModal = () => {
 <template>
   <v-dialog v-model="show" persistent :width="!checkMobileDevices() ? 400 : undefined">
     <v-card class="align-center">
-      <v-card-text data-testid="v-dialog-text" class="text-subtitle-1">{{
-        props.flightAdditionStatusMessage
-      }}</v-card-text>
+      <v-card-text class="d-flex flex-column align-center">
+        <v-icon v-if="props.success" icon="mdi-check-circle" color="#228b22" size="70" />
+        <v-icon v-else icon="mdi-alert-circle" color="#9a245d" size="70" />
+        <div class="text-subtitle-1">
+          {{ props.flightAdditionStatusMessage }}
+        </div>
+      </v-card-text>
       <v-card-actions>
         <v-btn variant="tonal" block @click="dismissModal">Close</v-btn>
       </v-card-actions>
