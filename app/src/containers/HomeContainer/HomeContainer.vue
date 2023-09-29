@@ -35,7 +35,7 @@ const onFormSubmit = async (formData: {
     flightAdditionStatusMessage.value = "Flight added successfully!";
   } else {
     flightAdditionStatusSuccess.value = false;
-    flightAdditionStatusMessage.value = "Flight addition failed!";
+    flightAdditionStatusMessage.value = "Flight addition failed. Duplicate flight number!";
   }
 };
 
@@ -86,7 +86,7 @@ onMounted(() => {
         <v-divider :thickness="20" color="#FFFFFF"></v-divider>
         <flight-listing :all-airports="airportData" :flight-listing="flightListingResponse" />
       </template>
-      <v-progress-linear indeterminate height="30" v-else>
+      <v-progress-linear class="text-subtitle-1" indeterminate height="30" v-else>
         <span v-if="initialLoad">Fetching flights and airports....</span>
         <span v-else>Refetching flights....</span>
       </v-progress-linear>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { checkMobileDevices } from "../../utils/common";
 
 const props = defineProps<{
   showDialog: boolean;
@@ -16,9 +17,9 @@ const dismissModal = () => {
 </script>
 
 <template>
-  <v-dialog v-model="show" persistent width="300">
+  <v-dialog v-model="show" persistent :width="!checkMobileDevices() ? 400 : undefined">
     <v-card class="align-center">
-      <v-card-text data-testid="v-dialog-text" class="text-h6">{{
+      <v-card-text data-testid="v-dialog-text" class="text-subtitle-1">{{
         props.flightAdditionStatusMessage
       }}</v-card-text>
       <v-card-actions>
