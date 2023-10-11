@@ -1,1 +1,1 @@
-# eurowings-test-app
+# flight-list-test-app
