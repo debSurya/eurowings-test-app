@@ -1,4 +1,4 @@
-#Flight List Demo Application
+# Flight List Demo Application
 
 This is a VUE.js application which demonstrates an admin view of  a list of flights. 
 The following are the features of the application:
